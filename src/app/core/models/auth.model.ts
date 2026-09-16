@@ -1,12 +1,12 @@
 export interface LoginRequest {
   email: string;
-  passwordHash: string;
+  password: string;
 }
 
 export interface RegisterRequest {
   email: string;
-  passwordHash: string;
-  fullName: string;
+  password: string;
+  name: string;
   role: 'Patient' | 'Doctor' | 'Admin';
 }
 

@@ -9,7 +9,7 @@ import { AuthResponse, LoginRequest, RegisterRequest, UserSession } from '../mod
 export class AuthService {
   private http = inject(HttpClient);
   // Ajusta la URL según el puerto asignado a tu API de .NET (ejemplo: https://localhost:7025/api/Auth)
-  private readonly API_URL = 'http://localhost:7108/api/auth';
+  private readonly API_URL = 'https://localhost:7108/api/auth';
 
   // 1. Signal privado con el estado inicial desde localStorage
   private currentUserSignal = signal<UserSession | null>(this.getUserFromStorage());
