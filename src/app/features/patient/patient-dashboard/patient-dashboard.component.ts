@@ -50,8 +50,10 @@ private doctorService = inject(DoctorService);
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
-    const docId = this.selectedDoctorId() !== null ? Number(this.selectedDoctorId()) : 0;
-    const dateStr = this.selectedDate() || '';
+    // Convierte '0', null o cadenas vacías a undefined
+    const rawId = Number(this.selectedDoctorId());
+    const docId = rawId > 0 ? rawId : undefined;
+    const dateStr = this.selectedDate() || undefined;
 
     this.doctorService.getAvailableTimeSlots(docId, dateStr).subscribe({
       next: (slots) => {
