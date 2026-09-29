@@ -1,15 +1,24 @@
-export interface Appointment { 
-    id: number;
-    timeslotId: number;
-    doctorId: number;
-    doctorName?: string;
-    doctorSpecialization?: string;
-    patientId: number;
-    patientName?: string;
-    createdAt: string; // ISO 8601 format
-    status: 'Scheduled' | 'Completed' | 'Cancelled';
-    paymentStatus: 'Pending' | 'Paid' | 'Refunded';
+export interface CreateAppointmentDto {
+  timeSlotId: number;
+  patientId?: number;
+  paymentMethod: string; // 'CreditCard' | 'DebitCard' | 'Simulated'
+}
 
+export interface AppointmentResponse {
+  id: number;
+  timeSlotId: number;
+  doctorId: number;
+  doctorName: string;
+  specialization: string;
+  patientId: number;
+  patientName: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  status: string;
+  paymentStatus: string;
+  transactionId: string;
+  amountPaid: number;
 }
 
 export interface BookAppointmentRequest {

@@ -1,0 +1,105 @@
+<div class="min-h-screen bg-gray-50 p-6">
+  <div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Encabezado -->
+    <header class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900">My Appointments</h1>
+        <p class="text-sm text-gray-500">View and track all your scheduled and past consultations.</p>
+      </div>
+      <button 
+        (click)="loadAppointments()"
+        class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg transition text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        </svg>
+        Refresh List
+      </button>
+    </header>
+
+    <!-- Indicador de Carga -->
+    @if (isLoading()) {
+      <div class="flex justify-center items-center py-12">
+        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+        <span class="ml-3 text-gray-600 font-medium">Loading your appointments...</span>
+      </div>
+    }
+
+    <!-- Mensaje de Error -->
+    @if (errorMessage()) {
+      <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
+        <p class="text-sm text-red-700">{{ errorMessage() }}</p>
+      </div>
+    }
+
+    <!-- Lista / Grilla de Citas -->
+    @if (!isLoading() && !errorMessage()) {
+      @if (appointments().length === 0) {
+        <div class="bg-white rounded-xl p-12 text-center border border-gray-100 shadow-sm">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+          </svg>
+          <h3 class="mt-2 text-sm font-semibold text-gray-900">No appointments found</h3>
+          <p class="mt-1 text-sm text-gray-500">You haven't scheduled any appointments yet.</p>
+        </div>
+      } @else {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          @for (item of appointments(); track item.id) {
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col justify-between hover:shadow-md transition-shadow">
+              <div class="space-y-4">
+                
+                <!-- Encabezado de la Tarjeta (Estado y ID) -->
+                <div class="flex items-center justify-between">
+                  <span [class]="'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ' + getStatusBadgeClass(item.status)">
+                    {{ item.status }}
+                  </span>
+                  <span class="text-xs font-mono font-semibold text-gray-400">#{{ item.id }}</span>
+                </div>
+
+                <!-- Doctor & Especialidad -->
+                <div>
+                  <h3 class="text-lg font-bold text-gray-900">{{ item.doctorName }}</h3>
+                  <p class="text-sm text-blue-600 font-medium">{{ item.specialization }}</p>
+                </div>
+
+                <!-- Detalles de Fecha y Hora -->
+                <div class="border-t border-gray-100 pt-3 text-sm text-gray-600 space-y-2">
+                  <div class="flex items-center">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <span><strong>Date:</strong> {{ item.date }}</span>
+                  </div>
+                  <div class="flex items-center">
+                    <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span><strong>Time:</strong> {{ item.startTime }} - {{ item.endTime }}</span>
+                  </div>
+                </div>
+
+                <!-- Detalle de Pago -->
+                <div class="bg-gray-50 rounded-lg p-3 text-xs text-gray-600 space-y-1 border border-gray-100">
+                  <div class="flex justify-between">
+                    <span>Payment Status:</span>
+                    <span class="font-semibold text-green-700 uppercase">{{ item.paymentStatus }}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Amount Paid:</span>
+                    <span class="font-bold text-gray-900">${{ item.amountPaid }}.00 USD</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Transaction:</span>
+                    <span class="font-mono text-gray-500">{{ item.transactionId }}</span>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+
+  </div>
+</div>

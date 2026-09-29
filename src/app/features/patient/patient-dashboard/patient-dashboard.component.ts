@@ -1,18 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component,inject,signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DoctorService } from '../../../core/services/doctor.service';
 import { Doctor } from '../../../core/models/doctor.model';
 import { TimeSlot } from '../../../core/models/timeslot.model';
+import { AppointmentService } from '../../../core/services/appointment.service';
 
 @Component({
   selector: 'app-patient-dashboard',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './patient-dashboard.component.html',
   styleUrl: './patient-dashboard.component.css'
 })
 export class PatientDashboardComponent {
 private doctorService = inject(DoctorService);
+private fb = inject(FormBuilder);
+private appointmentService = inject(AppointmentService);
 
   // Signals de Estado
   doctors = signal<Doctor[]>([]);
@@ -23,6 +26,21 @@ private doctorService = inject(DoctorService);
   // Signals para los Filtros de Búsqueda
   selectedDoctorId = signal<number | null>(null);
   selectedDate = signal<string>('');
+
+  // Signals para Modal de Reserva & Pago
+  selectedSlotForBooking = signal<TimeSlot | null>(null);
+  isBookingModalOpen = signal<boolean>(false);
+  isProcessingPayment = signal<boolean>(false);
+  bookingSuccess = signal<boolean>(false);
+  transactionId = signal<string | null>(null);
+
+  // Formulario de Pago
+  paymentForm: FormGroup = this.fb.group({
+    cardHolder: ['', [Validators.required]],
+    cardNumber: ['', [Validators.required, Validators.pattern('^[0-9]{16}$')]],
+    expiryDate: ['', [Validators.required, Validators.pattern('^(0[1-9]|1[0-2])\/([0-9]{2})$')]],
+    cvc: ['', [Validators.required, Validators.pattern('^[0-9]{3,4}$')]]
+  });
 
   ngOnInit(): void {
     this.loadDoctors();
@@ -96,5 +114,53 @@ private doctorService = inject(DoctorService);
     this.selectedDoctorId.set(null);
     this.selectedDate.set('');
     this.searchSlots();
+  }
+
+  // Abrir Modal con el Slot Seleccionado
+  openBookingModal(slot: TimeSlot): void {
+    this.selectedSlotForBooking.set(slot);
+    this.isBookingModalOpen.set(true);
+    this.bookingSuccess.set(false);
+    this.transactionId.set(null);
+    this.paymentForm.reset();
+  }
+
+  closeBookingModal(): void {
+    this.isBookingModalOpen.set(false);
+    this.selectedSlotForBooking.set(null);
+  }
+
+  // Procesar Cita & Pago Simulado
+  processBooking(): void {
+    if (this.paymentForm.invalid) {
+      this.paymentForm.markAllAsTouched();
+      return;
+    }
+
+    const slot = this.selectedSlotForBooking();
+    if (!slot) return;
+
+    this.isProcessingPayment.set(true);
+
+    const bookingPayload = {
+      timeSlotId: slot.id,
+      paymentMethod: 'SimulatedCreditCard'
+    };
+
+    this.appointmentService.createAppointment(bookingPayload).subscribe({
+      next: (res) => {
+        this.isProcessingPayment.set(false);
+        this.bookingSuccess.set(true);
+        this.transactionId.set(res.transactionId || 'TXN-' + Math.floor(100000 + Math.random() * 900000));
+        
+        // Refrescar la lista de turnos (el reservado ya no aparecerá)
+        this.searchSlots();
+      },
+      error: (err) => {
+        this.isProcessingPayment.set(false);
+        console.error('Error booking appointment:', err);
+        alert('Failed to process appointment booking. Please try again.');
+      }
+    });
   }
 }
