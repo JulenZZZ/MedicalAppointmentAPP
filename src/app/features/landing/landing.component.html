@@ -1,0 +1,143 @@
+<div class="min-h-screen bg-slate-50 text-slate-800 font-sans">
+
+  <!-- HERO SECTION -->
+  <header class="relative bg-gradient-to-br from-blue-900 via-indigo-900 to-blue-800 text-white overflow-hidden py-20 lg:py-28">
+    <!-- Decorative background glow -->
+    <div class="absolute -top-24 -left-24 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-cyan-400/20 rounded-full blur-3xl"></div>
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      
+      <!-- Main Headline & CTA -->
+      <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+        <span class="inline-flex items-center gap-2 bg-blue-500/20 text-cyan-300 border border-cyan-400/30 px-4 py-1.5 rounded-full text-sm font-medium">
+          ✨ Your Health, Our Priority
+        </span>
+        
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+          Book your medical appointment <span class="text-cyan-400">fast & effortlessly</span> online.
+        </h1>
+        
+        <p class="text-lg text-slate-300 max-w-2xl leading-relaxed">
+          Access a wide network of qualified medical specialists from the comfort of your home. No lines, no phone waiting times.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 pt-4 justify-center lg:justify-start">
+          <button (click)="goToAuth()" class="bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-8 py-4 rounded-xl shadow-lg shadow-cyan-500/30 transition-all hover:-translate-y-0.5">
+            Book Appointment Now
+          </button>
+          <a href="#how-it-works" class="border border-white/20 hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-xl transition-all">
+            How It Works
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero Visual Card -->
+      <div class="lg:col-span-5 flex justify-center">
+        <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-6 shadow-2xl max-w-md w-full text-slate-100">
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-14 h-14 bg-cyan-500/20 text-cyan-300 rounded-2xl flex items-center justify-center text-2xl font-bold">
+              👨‍⚕️
+            </div>
+            <div>
+              <h3 class="font-bold text-lg text-white">In-Person & Online Consultations</h3>
+              <p class="text-sm text-slate-300">Over 50 specialists available</p>
+            </div>
+          </div>
+          
+          <div class="space-y-3 bg-slate-900/40 p-4 rounded-2xl border border-white/10">
+            <div class="flex justify-between items-center text-sm">
+              <span class="text-slate-300">Today's Availability:</span>
+              <span class="text-emerald-400 font-semibold">● 12 Open Slots</span>
+            </div>
+            <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+              <div class="bg-emerald-400 h-full w-3/4 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- TRUST METRICS / STATS -->
+  <section class="bg-white border-b border-slate-200 py-10">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <p class="text-3xl lg:text-4xl font-extrabold text-blue-600">+10,000</p>
+        <p class="text-sm text-slate-500 font-medium">Patients Served</p>
+      </div>
+      <div>
+        <p class="text-3xl lg:text-4xl font-extrabold text-blue-600">50+</p>
+        <p class="text-sm text-slate-500 font-medium">Medical Specialists</p>
+      </div>
+      <div>
+        <p class="text-3xl lg:text-4xl font-extrabold text-blue-600">98%</p>
+        <p class="text-sm text-slate-500 font-medium">Customer Satisfaction</p>
+      </div>
+      <div>
+        <p class="text-3xl lg:text-4xl font-extrabold text-blue-600">24/7</p>
+        <p class="text-sm text-slate-500 font-medium">Online Reservations</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEDICAL SPECIALTIES -->
+  <section class="py-20 max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <h2 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Medical Specialties</h2>
+      <p class="text-slate-600 mt-4">We feature highly qualified healthcare professionals across multiple fields to take care of you and your family.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div *ngFor="let item of specialties" class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md border border-slate-200/80 transition-all hover:-translate-y-1 group">
+        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform inline-block">
+          {{ item.icon }}
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 mb-2">{{ item.title }}</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">{{ item.desc }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how-it-works" class="py-20 bg-slate-100 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <h2 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">How to Book Your Appointment</h2>
+        <p class="text-slate-600 mt-4">Follow 3 easy steps to confirm your slot with your preferred medical specialist.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div *ngFor="let step of steps" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 relative">
+          <span class="text-5xl font-black text-blue-100 absolute top-4 right-6 select-none">{{ step.number }}</span>
+          <h3 class="text-lg font-bold text-slate-900 mb-3 relative z-10">{{ step.title }}</h3>
+          <p class="text-slate-600 text-sm leading-relaxed relative z-10">{{ step.desc }}</p>
+        </div>
+      </div>
+
+      <div class="text-center mt-12">
+        <button (click)="goToAuth()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3.5 rounded-xl transition-all shadow-md">
+          Get Started Now
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col sm:flex-row justify-between items-center gap-6">
+      <div class="flex items-center gap-2 text-white font-bold text-lg">
+        <span>🩺</span> MediReserve App
+      </div>
+      <p class="text-sm text-slate-500">
+        © 2026 MediReserve. All rights reserved.
+      </p>
+      <div class="flex gap-6 text-sm">
+        <a routerLink="/auth" class="hover:text-white transition-colors">Sign In</a>
+        <a routerLink="/auth" class="hover:text-white transition-colors">Sign Up</a>
+      </div>
+    </div>
+  </footer>
+
+</div>

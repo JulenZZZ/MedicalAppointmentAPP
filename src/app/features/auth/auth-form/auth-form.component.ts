@@ -68,10 +68,12 @@ export class AuthFormComponent {
   private handleSuccess(): void {
     this.isLoading.set(false);
     const role = this.authService.userRole();
-    if (role === 'Doctor' || role === 'Admin') {
-      this.router.navigate(['/admin']);
+    if (role === 'Patient') {
+      this.router.navigate(['/patient']); // Redirige al buscador de citas
+    } else if (role === 'Admin' || role === 'Doctor') {
+      this.router.navigate(['/admin']); // O la ruta de gestión de Admin
     } else {
-      this.router.navigate(['/patient']);
+      this.router.navigate(['/auth']); // Fallback a la landing o ruta por defecto
     }
   }
 
