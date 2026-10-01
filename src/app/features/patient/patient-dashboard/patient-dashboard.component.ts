@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component,inject,signal } from '@angular/core';
+import { CommonModule, DatePipe } from '@angular/common';
+import { Component,computed,inject,OnInit,signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DoctorService } from '../../../core/services/doctor.service';
 import { Doctor } from '../../../core/models/doctor.model';
@@ -8,18 +8,18 @@ import { AppointmentService } from '../../../core/services/appointment.service';
 
 @Component({
   selector: 'app-patient-dashboard',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,DatePipe],
   templateUrl: './patient-dashboard.component.html',
   styleUrl: './patient-dashboard.component.css'
 })
-export class PatientDashboardComponent {
+export class PatientDashboardComponent implements OnInit {
 private doctorService = inject(DoctorService);
 private fb = inject(FormBuilder);
 private appointmentService = inject(AppointmentService);
 
   // Signals de Estado
   doctors = signal<Doctor[]>([]);
-  availableSlots = signal<TimeSlot[]>([]);
+  rawAvailableSlots = signal<TimeSlot[]>([]); //slots originales del servidor
   isLoading = signal<boolean>(false);
   errorMessage = signal<string | null>(null);
 
@@ -27,6 +27,26 @@ private appointmentService = inject(AppointmentService);
   selectedDoctorId = signal<number | null>(null);
   selectedDate = signal<string>('');
 
+  //Aplica el filtro en cliente garantizando coincidencia de fecha exacta
+  availableSlots = computed(() => {
+  const doctorId = Number(this.selectedDoctorId());
+  const targetDate = this.selectedDate().trim(); // Ejemplo del input: "2026-10-10"
+
+  return this.rawAvailableSlots().filter(slot => {
+    // 1. Filtro por Doctor
+    const matchesDoctor = !doctorId || doctorId === 0 || slot.doctorId === doctorId;
+
+    // 2. Filtro por Fecha (usando slot.date)
+    let matchesDate = true;
+    if (targetDate && slot.date) {
+      // Tomamos la propiedad 'date' y extraemos solo los primeros 10 caracteres ("YYYY-MM-DD")
+      const slotDatePart = String(slot.date).substring(0, 10);
+      matchesDate = slotDatePart === targetDate;
+    }
+
+      return matchesDoctor && matchesDate;
+    });
+  });
   // Signals para Modal de Reserva & Pago
   selectedSlotForBooking = signal<TimeSlot | null>(null);
   isBookingModalOpen = signal<boolean>(false);
@@ -75,8 +95,8 @@ private appointmentService = inject(AppointmentService);
 
     this.doctorService.getAvailableTimeSlots(docId, dateStr).subscribe({
       next: (slots) => {
-        this.availableSlots.set(slots);
-
+        console.log('📌 Slots recibidos del backend:', slots);
+        this.rawAvailableSlots.set(slots);
         // Si la lista de doctores no se cargó previamente, la extraemos de los slots recibidos
         if (this.doctors().length === 0 && slots.length > 0) {
           const extractedDoctors: Doctor[] = Array.from(
