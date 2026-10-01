@@ -95,7 +95,6 @@ private appointmentService = inject(AppointmentService);
 
     this.doctorService.getAvailableTimeSlots(docId, dateStr).subscribe({
       next: (slots) => {
-        console.log('📌 Slots recibidos del backend:', slots);
         this.rawAvailableSlots.set(slots);
         // Si la lista de doctores no se cargó previamente, la extraemos de los slots recibidos
         if (this.doctors().length === 0 && slots.length > 0) {
