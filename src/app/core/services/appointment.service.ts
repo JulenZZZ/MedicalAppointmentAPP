@@ -2,6 +2,8 @@ import { Injectable, signal, computed, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { AppointmentResponse, CreateAppointmentDto } from '../models/appointment.model';
 import { Observable } from 'rxjs/internal/Observable';
+import { environment } from '../../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,7 @@ import { Observable } from 'rxjs/internal/Observable';
 export class AppointmentService {
 
     private http = inject(HttpClient);
-    private readonly apiUrl = 'https://localhost:7108/api/appointments';
+    private readonly apiUrl = environment.apiUrl + '/appointments';
 
     /**
     * Reserva un horario disponible (TimeSlot) para el paciente autenticado.

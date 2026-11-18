@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Doctor } from '../models/doctor.model';
 import { Observable } from 'rxjs/internal/Observable';
 import { TimeSlot } from '../models/timeslot.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { TimeSlot } from '../models/timeslot.model';
 export class DoctorService {
   private http = inject(HttpClient);
   // Ajusta la URL según el puerto asignado a tu API de .NET (ejemplo: https://localhost:7025/api/Auth)
-  private readonly API_URL = 'https://localhost:7108/api';
+  private readonly API_URL = environment.apiUrl;
 
   getDoctors(): Observable<Doctor[]> {
     return this.http.get<Doctor[]>(`${this.API_URL}/doctors`);

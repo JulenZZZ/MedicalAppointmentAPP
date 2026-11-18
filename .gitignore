@@ -72,3 +72,4 @@ Thumbs.db
 desktop.ini
 *.swp
 *.sublime-workspace
+.vercel

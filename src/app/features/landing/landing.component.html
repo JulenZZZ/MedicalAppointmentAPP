@@ -1,58 +1,45 @@
 <div class="min-h-screen bg-slate-50 text-slate-800 font-sans">
 
   <!-- HERO SECTION -->
-  <header class="relative bg-gradient-to-br from-blue-900 via-indigo-900 to-blue-800 text-white overflow-hidden py-20 lg:py-28">
-    <!-- Decorative background glow -->
-    <div class="absolute -top-24 -left-24 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"></div>
-    <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-cyan-400/20 rounded-full blur-3xl"></div>
+  <header class="relative bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white overflow-hidden py-24 lg:py-32 border-b border-slate-800">
+    <!-- Subtle architectural background overlays -->
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-900/10 via-transparent to-transparent"></div>
+    <div class="absolute -top-40 -left-40 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px]"></div>
 
-    <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
       
-      <!-- Main Headline & CTA -->
-      <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-        <span class="inline-flex items-center gap-2 bg-blue-500/20 text-cyan-300 border border-cyan-400/30 px-4 py-1.5 rounded-full text-sm font-medium">
-          ✨ Your Health, Our Priority
+      <!-- Copy Content -->
+      <div class="lg:col-span-7 space-y-8 text-center lg:text-left">
+        <span class="inline-flex items-center gap-2 bg-blue-500/10 text-blue-300 border border-blue-400/20 px-4.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider">
+          Digital Healthcare Platform
         </span>
         
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
-          Book your medical appointment <span class="text-cyan-400">fast & effortlessly</span> online.
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-none text-white">
+          A smarter way to <br class="hidden sm:inline" />
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-300">manage your health.</span>
         </h1>
         
-        <p class="text-lg text-slate-300 max-w-2xl leading-relaxed">
-          Access a wide network of qualified medical specialists from the comfort of your home. No lines, no phone waiting times.
+        <p class="text-lg text-slate-300 max-w-xl leading-relaxed">
+          Book in-person and virtual consultations with top medical specialists, anytime. YourMed connects you with seamless, trusted care designed around your life.
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 pt-4 justify-center lg:justify-start">
-          <button routerLink="/patient" class="bg-cyan-500 hover:bg-cyan-400 text-slate-900 font-bold px-8 py-4 rounded-xl shadow-lg shadow-cyan-500/30 transition-all hover:-translate-y-0.5">
-            Book Appointment Now
+          <button (click)="goToAuth()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-4 rounded-lg shadow-lg shadow-blue-500/10 transition-all hover:-translate-y-0.5">
+            Book Appointment
           </button>
-          <a href="#how-it-works" class="border border-white/20 hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-xl transition-all">
-            How It Works
+          <a href="#how-it-works" class="inline-flex items-center justify-center gap-2 border border-slate-700 hover:bg-slate-800/50 text-slate-200 font-semibold px-8 py-4 rounded-lg transition-all">
+            Learn How It Works
           </a>
         </div>
       </div>
 
-      <!-- Hero Visual Card -->
-      <div class="lg:col-span-5 flex justify-center">
-        <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-6 shadow-2xl max-w-md w-full text-slate-100">
-          <div class="flex items-center gap-4 mb-6">
-            <div class="w-14 h-14 bg-cyan-500/20 text-cyan-300 rounded-2xl flex items-center justify-center text-2xl font-bold">
-              👨‍⚕️
-            </div>
-            <div>
-              <h3 class="font-bold text-lg text-white">In-Person & Online Consultations</h3>
-              <p class="text-sm text-slate-300">Over 50 specialists available</p>
-            </div>
-          </div>
-          
-          <div class="space-y-3 bg-slate-900/40 p-4 rounded-2xl border border-white/10">
-            <div class="flex justify-between items-center text-sm">
-              <span class="text-slate-300">Today's Availability:</span>
-              <span class="text-emerald-400 font-semibold">● 12 Open Slots</span>
-            </div>
-            <div class="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
-              <div class="bg-emerald-400 h-full w-3/4 rounded-full"></div>
-            </div>
+      <!-- Professional Visualization -->
+      <div class="lg:col-span-5 flex justify-center lg:justify-end">
+        <div class="bg-slate-900/40 border border-slate-800 rounded-2xl p-8 shadow-2xl max-w-md w-full backdrop-blur-sm">
+          <div class="border-b border-slate-800 pb-6 mb-6">
+            <span class="text-xs text-blue-400 font-bold uppercase tracking-wider">YourMed Network</span>
+            <h3 class="font-bold text-xl text-white mt-1">Verified Medical Professionals</h3>
+            <p class="text-sm text-slate-400 mt-1">Direct access to board-certified doctors, clinical centers and online consultations.</p>
           </div>
         </div>
       </div>
@@ -60,64 +47,50 @@
     </div>
   </header>
 
-  <!-- TRUST METRICS / STATS -->
-  <section class="bg-white border-b border-slate-200 py-10">
-    <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-      <div>
-        <p class="text-3xl lg:text-4xl font-extrabold text-blue-600">+10,000</p>
-        <p class="text-sm text-slate-500 font-medium">Patients Served</p>
-      </div>
-      <div>
-        <p class="text-3xl lg:text-4xl font-extrabold text-blue-600">50+</p>
-        <p class="text-sm text-slate-500 font-medium">Medical Specialists</p>
-      </div>
-      <div>
-        <p class="text-3xl lg:text-4xl font-extrabold text-blue-600">98%</p>
-        <p class="text-sm text-slate-500 font-medium">Customer Satisfaction</p>
-      </div>
-      <div>
-        <p class="text-3xl lg:text-4xl font-extrabold text-blue-600">24/7</p>
-        <p class="text-sm text-slate-500 font-medium">Online Reservations</p>
-      </div>
-    </div>
-  </section>
 
   <!-- MEDICAL SPECIALTIES -->
-  <section class="py-20 max-w-7xl mx-auto px-6 lg:px-12">
-    <div class="text-center max-w-2xl mx-auto mb-16">
-      <h2 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">Medical Specialties</h2>
-      <p class="text-slate-600 mt-4">We feature highly qualified healthcare professionals across multiple fields to take care of you and your family.</p>
+  <section class="py-24 max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="text-center max-w-3xl mx-auto mb-20">
+      <h2 class="text-3xl font-bold text-slate-900 sm:text-4xl tracking-tight">Our Specialities</h2>
+      <p class="text-slate-500 mt-4 text-base">Book verified, board-certified specialists across standard disciplines for both online and in-person care.</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div *ngFor="let item of specialties" class="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md border border-slate-200/80 transition-all hover:-translate-y-1 group">
-        <div class="text-4xl mb-4 group-hover:scale-110 transition-transform inline-block">
-          {{ item.icon }}
+      <div *ngFor="let item of specialties" class="bg-white p-8 rounded-xl border border-slate-200/80 hover:border-slate-300 shadow-sm hover:shadow-md transition-all duration-200 group">
+        <div class="w-12 h-12 bg-slate-50 group-hover:bg-blue-50 text-slate-700 group-hover:text-blue-600 rounded-lg flex items-center justify-center mb-6 transition-colors border border-slate-200/60">
+          
+          <!-- SVGs to replace emoticons (stethoscopes, heart, smiles etc) -->
+          <svg *ngIf="item.iconType === 'stethoscope'" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5C4.5 13.5 6 10 12 10s7.5 3.5 7.5 6.5" /><path d="M12 10V2" /><circle cx="12" cy="12" r="1" /><path d="M12 2C8 2 8 6 12 6s4-4 0-4z" /></svg>
+          <svg *ngIf="item.iconType === 'baby'" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M14 12a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+          <svg *ngIf="item.iconType === 'heart'" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+          <svg *ngIf="item.iconType === 'sparkles'" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>
+          <svg *ngIf="item.iconType === 'smile'" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          <svg *ngIf="item.iconType === 'eye'" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
         </div>
-        <h3 class="text-xl font-bold text-slate-900 mb-2">{{ item.title }}</h3>
-        <p class="text-slate-600 text-sm leading-relaxed">{{ item.desc }}</p>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">{{ item.title }}</h3>
+        <p class="text-slate-500 text-sm leading-relaxed">{{ item.desc }}</p>
       </div>
     </div>
   </section>
 
   <!-- HOW IT WORKS -->
-  <section id="how-it-works" class="py-20 bg-slate-100 border-t border-slate-200">
+  <section id="how-it-works" class="py-24 bg-slate-100 border-t border-slate-200">
     <div class="max-w-7xl mx-auto px-6 lg:px-12">
-      <div class="text-center max-w-2xl mx-auto mb-16">
-        <h2 class="text-3xl font-extrabold text-slate-900 sm:text-4xl">How to Book Your Appointment</h2>
-        <p class="text-slate-600 mt-4">Follow 3 easy steps to confirm your slot with your preferred medical specialist.</p>
+      <div class="text-center max-w-3xl mx-auto mb-20">
+        <h2 class="text-3xl font-bold text-slate-900 sm:text-4xl tracking-tight">How to Book Your Appointment</h2>
+        <p class="text-slate-500 mt-4 text-base">Book in under 5 minutes with our intuitive 3-step scheduling process.</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div *ngFor="let step of steps" class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 relative">
-          <span class="text-5xl font-black text-blue-100 absolute top-4 right-6 select-none">{{ step.number }}</span>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div *ngFor="let step of steps" class="bg-white p-8 rounded-xl border border-slate-200/85 relative shadow-sm hover:shadow-md transition-shadow">
+          <span class="text-5xl font-black text-slate-100 absolute top-4 right-6 select-none">{{ step.number }}</span>
           <h3 class="text-lg font-bold text-slate-900 mb-3 relative z-10">{{ step.title }}</h3>
-          <p class="text-slate-600 text-sm leading-relaxed relative z-10">{{ step.desc }}</p>
+          <p class="text-slate-500 text-sm leading-relaxed relative z-10">{{ step.desc }}</p>
         </div>
       </div>
 
-      <div class="text-center mt-12">
-        <button (click)="goToAuth()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-3.5 rounded-xl transition-all shadow-md">
+      <div class="text-center mt-14">
+        <button (click)="goToAuth()" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3.5 rounded-lg shadow-lg shadow-blue-500/10 transition-all hover:-translate-y-0.5">
           Get Started Now
         </button>
       </div>
@@ -125,17 +98,34 @@
   </section>
 
   <!-- FOOTER -->
-  <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col sm:flex-row justify-between items-center gap-6">
-      <div class="flex items-center gap-2 text-white font-bold text-lg">
-        <span>🩺</span> MediReserve App
+  <footer class="bg-slate-900 text-slate-400 py-16 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-8 border-b border-slate-800 pb-12 mb-12">
+        
+        <!-- Logo and Slogan -->
+        <div class="flex items-center gap-2.5 text-white font-bold text-xl cursor-pointer" routerLink="/">
+          <div class="w-8 h-8 rounded bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold border border-blue-500/30 text-base">
+            Y
+          </div>
+          <span class="tracking-tight">YourMed</span>
+        </div>
+
+        <!-- Navigation -->
+        <div class="flex gap-8 text-sm font-medium">
+          <a routerLink="/" class="hover:text-white transition-colors">Home</a>
+          <a routerLink="/about" class="hover:text-white transition-colors">About</a>
+          <a routerLink="/services" class="hover:text-white transition-colors">Services</a>
+          <a routerLink="/auth" class="hover:text-white transition-colors font-semibold text-blue-400">Join as Doctor</a>
+        </div>
       </div>
-      <p class="text-sm text-slate-500">
-        © 2026 MediReserve. All rights reserved.
-      </p>
-      <div class="flex gap-6 text-sm">
-        <a routerLink="/auth" class="hover:text-white transition-colors">Sign In</a>
-        <a routerLink="/auth" class="hover:text-white transition-colors">Sign Up</a>
+
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-6 text-xs text-slate-500">
+        <p>© 2026 YourMed Technologies Inc. All rights reserved.</p>
+        <div class="flex gap-4">
+          <a class="hover:text-slate-400">Privacy Policy</a>
+          <span>•</span>
+          <a class="hover:text-slate-400">Terms of Service</a>
+        </div>
       </div>
     </div>
   </footer>
