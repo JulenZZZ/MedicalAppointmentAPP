@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7108/api'
+  apiUrl: 'https://app-yourmed-api-cjfwcjgzeqbrfge7.polandcentral-01.azurewebsites.net/api'
 };
