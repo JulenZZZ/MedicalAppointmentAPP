@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "name": "YourMed",
+  "description": "Digital healthcare and medical appointment scheduling platform.",
+  "url": "https://yourmed-phi.vercel.app",
+  "resources": [
+    {
+      "name": "Home",
+      "url": "https://yourmed-phi.vercel.app/",
+      "description": "Main landing page and overview of medical specialties."
+    },
+    {
+      "name": "Authentication",
+      "url": "https://yourmed-phi.vercel.app/auth",
+      "description": "Patient and administrator login and registration portal."
+    }
+  ]
+}
