@@ -27,6 +27,11 @@
           </div>
         </div>
       }
+      @if (successMessage()) {
+        <div style="background-color: #d1e7dd; color: #0f5132; padding: 0.75rem 1rem; border-radius: 0.375rem; margin-bottom: 1rem; border: 1px solid #badbcc;">
+          {{ successMessage() }}
+        </div>
+      }
 
       <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="space-y-5">
         

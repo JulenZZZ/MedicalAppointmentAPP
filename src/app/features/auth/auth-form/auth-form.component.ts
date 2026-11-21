@@ -19,6 +19,7 @@ export class AuthFormComponent {
   // Signals para el estado de la UI
   isLoginMode = signal<boolean>(true);
   errorMessage = signal<string | null>(null);
+  successMessage = signal<string | null>(null);
   isLoading = signal<boolean>(false);
 
   // Formulario Reactivo
@@ -32,7 +33,8 @@ export class AuthFormComponent {
   toggleMode(): void {
     this.isLoginMode.update(val => !val);
     this.errorMessage.set(null);
-    
+    this.successMessage.set(null);
+
     // Ajustar validaciones según el modo
     if (this.isLoginMode()) {
       this.authForm.get('name')?.clearValidators();
@@ -50,37 +52,52 @@ export class AuthFormComponent {
 
     this.isLoading.set(true);
     this.errorMessage.set(null);
+    this.successMessage.set(null);
 
     if (this.isLoginMode()) {
       const { email, password } = this.authForm.value;
       this.authService.login({ email, password }).subscribe({
-        next: () => this.handleSuccess(),
+        next: () => this.handleLoginSuccess(),
         error: (err) => this.handleError(err)
       });
     } else {
       this.authService.register(this.authForm.value).subscribe({
-        next: () => this.handleSuccess(),
+        next: () => this.handleRegisterSuccess(),
         error: (err) => this.handleError(err)
       });
     }
   }
 
-  private handleSuccess(): void {
+  private handleRegisterSuccess(): void {
+    this.isLoading.set(false);
+
+    // Cambiar al formulario de Login dejando el email rellenado
+    this.isLoginMode.set(true);
+    this.authForm.get('name')?.clearValidators();
+    this.authForm.get('name')?.updateValueAndValidity();
+    this.authForm.patchValue({ name: '', password: '' });
+    this.authForm.markAsUntouched();
+
+    this.successMessage.set('Account created successfully! Please sign in to continue.');
+  }
+
+  private handleLoginSuccess(): void {
     this.isLoading.set(false);
     const role = this.authService.userRole();
     if (role === 'Patient') {
-      this.router.navigate(['/patient']); // Redirige al buscador de citas
+      this.router.navigate(['/patient']);
     } else if (role === 'Admin' || role === 'Doctor') {
-      this.router.navigate(['/admin']); // O la ruta de gestión de Admin
+      this.router.navigate(['/admin']);
     } else {
-      this.router.navigate(['/auth']); // Fallback a la landing o ruta por defecto
+      this.router.navigate(['/auth']);
     }
   }
 
   private handleError(err: any): void {
     this.isLoading.set(false);
     if (err.status === 401 || err.status === 400) {
-      this.errorMessage.set(err.error?.message || 'Invalid credentials or incorrect data provided.');
+      const serverMsg = typeof err.error === 'string' ? err.error : err.error?.message;
+      this.errorMessage.set(serverMsg || 'Invalid credentials or incorrect data provided.');
     } else {
       this.errorMessage.set('A server error occurred. Please try again.');
     }
