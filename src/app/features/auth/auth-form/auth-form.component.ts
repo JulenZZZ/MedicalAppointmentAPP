@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-auth-form',
-  imports: [CommonModule, ReactiveFormsModule],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.css'
 })
@@ -21,6 +22,7 @@ export class AuthFormComponent {
   errorMessage = signal<string | null>(null);
   successMessage = signal<string | null>(null);
   isLoading = signal<boolean>(false);
+  showPassword = signal<boolean>(false);
 
   // Formulario Reactivo
   authForm: FormGroup = this.fb.group({
@@ -34,14 +36,18 @@ export class AuthFormComponent {
     this.isLoginMode.update(val => !val);
     this.errorMessage.set(null);
     this.successMessage.set(null);
+    this.showPassword.set(false);
 
-    // Ajustar validaciones según el modo
     if (this.isLoginMode()) {
       this.authForm.get('name')?.clearValidators();
     } else {
       this.authForm.get('name')?.setValidators([Validators.required]);
     }
     this.authForm.get('name')?.updateValueAndValidity();
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword.update(val => !val);
   }
 
   onSubmit(): void {
@@ -70,8 +76,6 @@ export class AuthFormComponent {
 
   private handleRegisterSuccess(): void {
     this.isLoading.set(false);
-
-    // Cambiar al formulario de Login dejando el email rellenado
     this.isLoginMode.set(true);
     this.authForm.get('name')?.clearValidators();
     this.authForm.get('name')?.updateValueAndValidity();

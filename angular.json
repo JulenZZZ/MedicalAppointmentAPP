@@ -24,6 +24,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "ai-catalog.json",
+                "input": "public",
+                "output": ".well-known"
               }
             ],
             "styles": [
@@ -88,6 +93,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "ai-catalog.json",
+                "input": "public",
+                "output": ".well-known"
               }
             ],
             "styles": [

@@ -1,94 +1,206 @@
-<div class="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-  <div class="sm:mx-auto sm:w-full sm:max-w-md">
-    <div class="flex justify-center">
-      <div class="w-16 h-16 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600 font-bold text-3xl shadow-sm">
-        🏥
-      </div>
+<div class="min-h-[calc(100vh-5rem)] bg-white flex flex-col justify-between px-4 py-10 sm:px-6 lg:px-8">
+  
+  <!-- Contenedor central estrecho estilo portal clínico -->
+  <div class="w-full max-w-md mx-auto my-auto">
+    
+    <!-- Logotipo superior -->
+    <div class="flex justify-center mb-8">
+      <a routerLink="/" class="inline-flex items-center focus:outline-none">
+        <img
+          src="/logo-yourmed.svg"
+          alt="YourMed Digital Healthcare"
+          width="170"
+          height="40"
+          class="h-10 w-auto object-contain"
+        />
+      </a>
     </div>
-    <h2 class="mt-4 text-center text-3xl font-extrabold text-slate-900">
-      {{ isLoginMode() ? 'Sign in to your account' : 'Create your medical account' }}
-    </h2>
-    <p class="mt-2 text-center text-sm text-slate-600">
-      {{ isLoginMode() ? "Don't have an account yet?" : 'Already have an account?' }}
-      <button (click)="toggleMode()" type="button" class="font-semibold text-primary-600 hover:text-primary-500 underline ml-1">
-        {{ isLoginMode() ? 'Register here' : 'Sign in' }}
-      </button>
-    </p>
-  </div>
 
-  <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-    <div class="bg-white py-8 px-4 shadow-xl shadow-slate-200/50 sm:rounded-2xl sm:px-10 border border-slate-100">
-      
-      <!-- Error Alert Message -->
-      @if (errorMessage()) {
-        <div class="mb-4 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-md">
-          <div class="text-sm text-red-700">
-            {{ errorMessage() }}
-          </div>
+    <!-- Encabezado de sección -->
+    <div class="mb-6">
+      <h1 class="text-2xl font-bold text-slate-900 tracking-tight">
+        {{ isLoginMode() ? 'Log in to the Patient Portal' : 'Create your Patient Portal account' }}
+      </h1>
+      <p class="mt-1.5 text-sm text-slate-600">
+        {{ isLoginMode()
+          ? 'Enter your credentials to manage consultations and medical visits.'
+          : 'Register to book appointments with verified specialists online or in person.' }}
+      </p>
+    </div>
+
+    <!-- Mensajes de confirmación o error -->
+    @if (successMessage()) {
+      <div role="status" class="mb-5 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3 text-sm text-emerald-900 flex items-start gap-2.5">
+        <svg class="w-5 h-5 text-[#007A3D] shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>{{ successMessage() }}</span>
+      </div>
+    }
+
+    @if (errorMessage()) {
+      <div role="alert" class="mb-5 rounded-xl bg-rose-50 border border-rose-200 px-4 py-3 text-sm text-rose-900 flex items-start gap-2.5">
+        <svg class="w-5 h-5 text-rose-600 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>{{ errorMessage() }}</span>
+      </div>
+    }
+
+    <!-- Formulario -->
+    <form [formGroup]="authForm" (ngSubmit)="onSubmit()" novalidate class="space-y-5">
+
+      <!-- Nombre completo (Solo en modo Registro) -->
+      @if (!isLoginMode()) {
+        <div>
+          <label for="auth-name" class="block text-sm font-medium text-slate-800 mb-1.5">
+            Full Name
+          </label>
+          <input
+            id="auth-name"
+            type="text"
+            formControlName="name"
+            autocomplete="name"
+            placeholder="Enter your full name"
+            class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#00529B] focus:outline-none focus:ring-2 focus:ring-[#00529B]/20 transition"
+          />
+          @if (authForm.get('name')?.invalid && authForm.get('name')?.touched) {
+            <p class="mt-1.5 text-xs text-rose-700 font-medium">
+              Full name is required to create an account.
+            </p>
+          }
         </div>
       }
-      @if (successMessage()) {
-        <div style="background-color: #d1e7dd; color: #0f5132; padding: 0.75rem 1rem; border-radius: 0.375rem; margin-bottom: 1rem; border: 1px solid #badbcc;">
-          {{ successMessage() }}
-        </div>
-      }
 
-      <form [formGroup]="authForm" (ngSubmit)="onSubmit()" class="space-y-5">
-        
-        <!-- Full Name (Only for Registration) -->
-        @if (!isLoginMode()) {
-          <div>
-            <label class="block text-sm font-medium text-slate-700">Full Name</label>
-            <input formControlName="name" type="text" placeholder="e.g. Dr. John Doe or Jane Smith"
-              class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500 text-sm" />
-            @if (authForm.get('name')?.touched && authForm.get('name')?.invalid) {
-              <span class="text-xs text-red-500 mt-1 block">Full name is required.</span>
+      <!-- Correo electrónico / Login -->
+      <div>
+        <label for="auth-email" class="block text-sm font-medium text-slate-800 mb-1.5">
+          {{ isLoginMode() ? 'Login (Email address)' : 'Email address' }}
+        </label>
+        <div class="relative">
+          <input
+            id="auth-email"
+            type="email"
+            formControlName="email"
+            autocomplete="email"
+            placeholder="Enter your email address"
+            class="w-full rounded-lg border border-slate-300 bg-white pl-3.5 pr-10 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#00529B] focus:outline-none focus:ring-2 focus:ring-[#00529B]/20 transition"
+          />
+          <span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-slate-400" title="Use your registered email address">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </span>
+        </div>
+        @if (authForm.get('email')?.invalid && authForm.get('email')?.touched) {
+          <p class="mt-1.5 text-xs text-rose-700 font-medium">
+            Please enter a valid email address.
+          </p>
+        }
+      </div>
+
+      <!-- Contraseña con botón de visibilidad -->
+      <div>
+        <label for="auth-password" class="block text-sm font-medium text-slate-800 mb-1.5">
+          Password
+        </label>
+        <div class="relative">
+          <input
+            id="auth-password"
+            [type]="showPassword() ? 'text' : 'password'"
+            formControlName="password"
+            [autocomplete]="isLoginMode() ? 'current-password' : 'new-password'"
+            placeholder="Enter password"
+            class="w-full rounded-lg border border-slate-300 bg-white pl-3.5 pr-10 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#00529B] focus:outline-none focus:ring-2 focus:ring-[#00529B]/20 transition"
+          />
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+            class="absolute inset-y-0 right-3 flex items-center text-slate-500 hover:text-slate-800 focus:outline-none">
+            @if (!showPassword()) {
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            } @else {
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+              </svg>
             }
-          </div>
-        }
-
-        <!-- Email -->
-        <div>
-          <label class="block text-sm font-medium text-slate-700">Email Address</label>
-          <input formControlName="email" type="email" placeholder="user@example.com"
-            class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500 text-sm" />
-          @if (authForm.get('email')?.touched && authForm.get('email')?.invalid) {
-            <span class="text-xs text-red-500 mt-1 block">Please enter a valid email address.</span>
-          }
+          </button>
         </div>
-
-        <!-- Password -->
-        <div>
-          <label class="block text-sm font-medium text-slate-700">Password</label>
-          <input formControlName="password" type="password" placeholder="••••••••"
-            class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500 text-sm" />
-          @if (authForm.get('password')?.touched && authForm.get('password')?.invalid) {
-            <span class="text-xs text-red-500 mt-1 block">Password must be at least 6 characters.</span>
-          }
-        </div>
-
-        <!-- Role Selection (Only for Registration) -->
-        @if (!isLoginMode()) {
-          <div>
-            <label class="block text-sm font-medium text-slate-700">Account Type</label>
-            <select formControlName="role"
-              class="mt-1 block w-full px-3 py-2 border border-slate-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500 text-sm bg-white">
-              <option value="Patient">Patient</option>
-              <option value="Doctor">Doctor</option>
-            </select>
-          </div>
+        @if (authForm.get('password')?.invalid && authForm.get('password')?.touched) {
+          <p class="mt-1.5 text-xs text-rose-700 font-medium">
+            Password must be at least 6 characters long.
+          </p>
         }
+      </div>
 
-        <!-- Submit Button -->
-        <button type="submit" [disabled]="isLoading()"
-          class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 transition duration-150">
+      <!-- Selector de Rol (Solo en modo Registro) -->
+      @if (!isLoginMode()) {
+        <div>
+          <label for="auth-role" class="block text-sm font-medium text-slate-800 mb-1.5">
+            Account Type
+          </label>
+          <select
+            id="auth-role"
+            formControlName="role"
+            class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 focus:border-[#00529B] focus:outline-none focus:ring-2 focus:ring-[#00529B]/20 transition">
+            <option value="Patient">Patient</option>
+            <option value="Doctor">Medical Specialist (Doctor)</option>
+          </select>
+        </div>
+      }
+
+      <!-- Botón principal verde píldora -->
+      <div class="pt-2">
+        <button
+          type="submit"
+          [disabled]="isLoading()"
+          class="w-full rounded-full bg-[#007A3D] hover:bg-[#006231] disabled:opacity-60 text-white font-semibold text-sm py-3 px-6 shadow-sm transition-colors cursor-pointer">
           @if (isLoading()) {
-            <span>Loading...</span>
+            <span>{{ isLoginMode() ? 'Signing in...' : 'Creating account...' }}</span>
           } @else {
-            <span>{{ isLoginMode() ? 'Sign In' : 'Register' }}</span>
+            <span>{{ isLoginMode() ? 'Log in' : 'Create account' }}</span>
           }
         </button>
-      </form>
+      </div>
+    </form>
+
+    <!-- Enlaces secundarios en azul institucional -->
+    <div class="mt-6 space-y-2.5 text-sm">
+      <div>
+        <button
+          type="button"
+          (click)="toggleMode()"
+          class="font-medium text-[#00529B] hover:underline focus:outline-none cursor-pointer">
+          {{ isLoginMode() ? 'Create an account' : 'Already have an account? Log in' }}
+        </button>
+      </div>
+      <div>
+        <a routerLink="/" class="font-medium text-[#00529B] hover:underline">
+          Back to YourMed home
+        </a>
+      </div>
     </div>
+
+    <!-- Separador y tarjeta inferior del Portal del Paciente -->
+    <div class="mt-8 pt-6 border-t border-slate-200">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl border border-slate-200 bg-[#F4F7FA] flex items-center justify-center shrink-0">
+          <svg class="w-6 h-6 text-[#007A3D]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-sm font-bold text-slate-900">YourMed Patient Portal</p>
+          <p class="text-xs text-slate-600 mt-0.5">
+            Make healthcare easier — book, review, and manage your medical visits online.
+          </p>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

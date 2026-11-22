@@ -1,0 +1,68 @@
+<footer class="bg-white border-t border-slate-200 text-slate-700 pt-14 pb-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 pb-12">
+      
+      <!-- Columna izquierda: Enlaces institucionales -->
+      <div class="lg:col-span-6">
+        <div class="flex items-center gap-4 mb-6">
+          <h2 class="text-xl font-bold text-slate-900">YourMed Healthcare</h2>
+          <div class="h-px bg-slate-200 flex-1"></div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-6 text-sm font-medium text-[#00529B]">
+          <ul class="space-y-3">
+            <li><a routerLink="/" class="hover:underline">About YourMed</a></li>
+            <li><a routerLink="/patient" class="hover:underline">Find a Doctor</a></li>
+            <li><a href="#specialties" class="hover:underline">Medical Specialties</a></li>
+            <li><a href="#health-guides" class="hover:underline">Patient Guides</a></li>
+          </ul>
+          <ul class="space-y-3">
+            <li><a routerLink="/auth" class="hover:underline">Patient Portal Login</a></li>
+            <li><a routerLink="/my-appointments" class="hover:underline">Manage Appointments</a></li>
+            <li><a routerLink="/auth" class="hover:underline">Medical Staff Access</a></li>
+            <li><a href="#how-we-help" class="hover:underline">Help & FAQ</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Columna derecha: Tarjeta verde CTA + Portal del Paciente -->
+      <div class="lg:col-span-6 space-y-5">
+        <div class="bg-[#007A3D] rounded-3xl px-7 py-6 text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+          <span class="text-lg font-bold">Schedule your visit online</span>
+          <a
+            routerLink="/patient"
+            class="px-6 py-2.5 rounded-full bg-[#00529B] hover:bg-[#003E75] text-white text-sm font-semibold transition-colors shrink-0">
+            Book online
+          </a>
+        </div>
+
+        <div class="bg-[#F4F7FA] rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 border border-slate-200/60">
+          <div>
+            <p class="text-base font-bold text-slate-900">YourMed Patient Portal</p>
+            <p class="text-sm text-slate-600 mt-1">
+              Book consultations, review upcoming appointments, and manage your care from any device.
+            </p>
+          </div>
+          <a
+            routerLink="/auth"
+            class="px-5 py-2.5 rounded-full border border-[#00529B] text-[#00529B] hover:bg-[#00529B] hover:text-white text-sm font-semibold transition-colors shrink-0">
+            Open Portal
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Barra legal inferior -->
+    <div class="pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-[#00529B]">
+      <div class="flex flex-wrap items-center gap-6">
+        <a routerLink="/" class="hover:underline">Privacy Policy</a>
+        <a routerLink="/" class="hover:underline">Terms of Service</a>
+        <a routerLink="/" class="hover:underline">Accessibility Statement</a>
+      </div>
+      <p class="text-slate-600">
+        © 2026 YourMed Digital Healthcare by <a href="https://jzulaika.com" target="_blank" class="hover:underline" style="color: #907712;">Julen Zulaika</a>. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>

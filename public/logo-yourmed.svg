@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 218 52" fill="none">
+  
+  <path d="M6 8 L18 26 L18 39 C18 44.5 22.5 48 28 48 C33.5 48 38 44.5 38 39 L38 32" stroke="#00529B" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round" />
+
+  
+  <path d="M18 26 L30 8 C32.5 4.8 38 6.2 38 10.5 L38 15" stroke="#007A3D" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round" />
+
+  
+  <rect x="32.5" y="15" width="11" height="25" rx="2.5" fill="#007A3D" />
+  <rect x="25.5" y="22" width="25" height="11" rx="2.5" fill="#007A3D" />
+
+  
+  <path d="M33 27.5 L36.8 31.2 L44.2 23.8" stroke="#FFFFFF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" />
+
+  
+  <text x="58" y="36" font-family="system-ui, -apple-system, &#39;Segoe UI&#39;, Roboto, sans-serif" font-size="31" font-weight="800" letter-spacing="-0.6">
+    <tspan fill="#00529B">Your</tspan><tspan fill="#007A3D">Med</tspan>
+  </text>
+</svg>
