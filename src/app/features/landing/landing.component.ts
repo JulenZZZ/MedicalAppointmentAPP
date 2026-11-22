@@ -29,7 +29,6 @@ export class LandingComponent {
       alt: 'Doctor reviewing digital health records with a patient'
     }
   ];
-
   specialties = [
     {
       title: 'General Medicine & Family Care',
