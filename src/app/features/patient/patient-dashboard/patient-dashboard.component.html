@@ -1,276 +1,316 @@
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  
-  <!-- Encabezado -->
-  <div class="mb-8">
-    <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Available Time Slots</h1>
-    <p class="text-slate-600 mt-1">Search and filter available appointments with our specialists.</p>
-  </div>
+<div class="min-h-screen bg-[#F4F7FA] py-8 md:py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-  <!-- Panel de Filtros -->
-  <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-8">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
-      
-      <!-- Filtro 1: Selección de Médico -->
-      <div>
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Specialist / Doctor</label>
-        <select 
-          [ngModel]="selectedDoctorId()" 
-          (ngModelChange)="selectedDoctorId.set($event); onFilterChange()"
-          class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl bg-white focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm font-medium text-slate-800 transition">
-          <option [ngValue]="null">All Doctors</option>
-          @for (doctor of doctors(); track doctor.id) {
-            <option [value]="doctor.id">{{ doctor.name }} - {{ doctor.specialization }}</option>
-          }
-        </select>
-      </div>
-
-      <!-- Filtro 2: Selección de Fecha -->
-      <div>
-        <label class="block text-sm font-semibold text-slate-700 mb-1.5">Date</label>
-        <input 
-          type="date" 
-          [ngModel]="selectedDate()" 
-          (ngModelChange)="selectedDate.set($event); onFilterChange()"
-          class="w-full px-3.5 py-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm font-medium text-slate-800 transition" />
-      </div>
-
-      <!-- Botón de Limpiar Filtros -->
-      <div>
-        <button 
-          (click)="resetFilters()" 
-          type="button"
-          class="w-full py-2.5 px-4 border border-slate-300 rounded-xl text-sm font-semibold text-slate-700 hover:bg-slate-100 active:bg-slate-200 transition duration-150">
-          Clear Filters
-        </button>
-      </div>
+    <!-- Encabezado -->
+    <div class="mb-8">
+      <span class="inline-block text-xs font-bold uppercase tracking-wider text-[#007A3D] mb-1">
+        Online Scheduling
+      </span>
+      <h1 class="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">Available Time Slots</h1>
+      <p class="text-sm md:text-base text-slate-600 mt-1">Search and filter available appointments with our specialists.</p>
     </div>
-  </div>
 
-  <!-- Alerta de Error -->
-  @if (errorMessage()) {
-    <div class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-xl text-sm text-red-700 shadow-sm flex items-center justify-between">
-      <span>{{ errorMessage() }}</span>
-      <button (click)="searchSlots()" class="font-bold underline ml-2 hover:text-red-800">Retry</button>
-    </div>
-  }
+    <!-- Panel de Filtros (Estilo barra limpia de la landing) -->
+    <div class="bg-white p-6 md:p-7 rounded-3xl shadow-sm border border-slate-200/80 mb-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 items-end">
 
-  <!-- Estado 1: Spinner de Cargando -->
-  @if (isLoading()) {
-    <div class="flex flex-col items-center justify-center py-16">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mb-3"></div>
-      <p class="text-sm font-medium text-slate-500">Searching available slots...</p>
-    </div>
-  } @else {
-    
-    <!-- Estado 2: Lista Vacía (No slots available) -->
-    @if (availableSlots().length === 0) {
-      <div class="text-center py-16 bg-white rounded-2xl border border-slate-200 shadow-sm px-4">
-        <div class="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
-          🔍
+        <!-- Filtro 1: Selección de Médico -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
+            Specialist / Doctor
+          </label>
+          <select
+            [ngModel]="selectedDoctorId()"
+            (ngModelChange)="selectedDoctorId.set($event); onFilterChange()"
+            class="w-full px-4 py-2.5 border border-slate-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#00529B]/20 focus:border-[#00529B] text-sm font-medium text-slate-800 transition">
+            <option [ngValue]="null">All Doctors</option>
+            @for (doctor of doctors(); track doctor.id) {
+              <option [value]="doctor.id">{{ doctor.name }} - {{ doctor.specialization }}</option>
+            }
+          </select>
         </div>
-        <h3 class="text-lg font-bold text-slate-800">No slots available</h3>
-        <p class="text-sm text-slate-500 max-w-sm mx-auto mt-1">
-          There are no available appointments matching your selected filter criteria. Try clearing or changing the date.
-        </p>
-        <button (click)="resetFilters()" class="mt-4 px-4 py-2 bg-primary-50 text-primary-600 font-semibold text-sm rounded-xl hover:bg-primary-100 transition">
-          Reset Filters
-        </button>
+
+        <!-- Filtro 2: Selección de Fecha -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">
+            Date
+          </label>
+          <input
+            type="date"
+            [ngModel]="selectedDate()"
+            (ngModelChange)="selectedDate.set($event); onFilterChange()"
+            class="w-full px-4 py-2.5 border border-slate-300 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-[#00529B]/20 focus:border-[#00529B] text-sm font-medium text-slate-800 transition" />
+        </div>
+
+        <!-- Botón de Limpiar Filtros (Estilo píldora) -->
+        <div>
+          <button
+            (click)="resetFilters()"
+            type="button"
+            class="w-full py-2.5 px-6 border border-slate-300 rounded-full text-sm font-semibold text-slate-800 hover:border-[#00529B] hover:text-[#00529B] transition-colors">
+            Clear Filters
+          </button>
+        </div>
       </div>
-    } @else {
-      
-      <!-- Estado 3: Grilla Responsiva de Tarjetas de Horarios -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        @for (slot of rawAvailableSlots(); track slot.id) {
-          <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-primary-300 transition duration-200 flex flex-col justify-between">
-            <div>
-              <!-- Badges superiores -->
-              <div class="flex justify-between items-center mb-3">
-                <span class="px-2.5 py-1 text-xs font-bold bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200">
-                  Available
-                </span>
-                <span class="text-xs font-semibold text-slate-500 flex items-center gap-1">
-                  📅 {{ slot.date | date:'dd/MM/yyyy'}}
-                </span>
-              </div>
+    </div>
 
-              <!-- Info del Médico -->
-              <h4 class="font-bold text-slate-900 text-lg leading-snug">
-                {{ slot.doctorName || 'Medical Specialist' }}
-              </h4>
-              <p class="text-xs text-slate-500 font-medium">
-                {{ slot.specialization || 'General Medicine' }}
-              </p>
-
-              <!-- Horario -->
-              <div class="mt-4 bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center gap-2">
-                <span class="text-lg">⏰</span>
-                <span class="text-sm font-bold text-slate-800">
-                  {{ slot.startTime }} - {{ slot.endTime }}
-                </span>
-              </div>
-            </div>
-
-            <!-- Botón de Selección -->
-            <button (click)="openBookingModal(slot)"
-              type="button"
-              class="mt-5 w-full py-2.5 px-4 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold text-sm shadow-sm transition duration-150">
-              Select & Book
-            </button>
-          </div>
-        }
+    <!-- Alerta de Error -->
+    @if (errorMessage()) {
+      <div class="mb-6 bg-rose-50 border-l-4 border-rose-600 p-4 rounded-r-2xl text-sm text-rose-800 shadow-sm flex items-center justify-between">
+        <span class="font-medium">{{ errorMessage() }}</span>
+        <button (click)="searchSlots()" class="font-bold underline ml-2 hover:text-rose-950">Retry</button>
       </div>
     }
-  }
-  <!-- ========================================== -->
-  <!-- MODAL DE CHECKOUT & PAGO SIMULADO (HUF-3)   -->
-  <!-- ========================================== -->
-  @if (isBookingModalOpen()) {
-    <div class="fixed inset-0 z-50 overflow-y-auto bg-gray-900 bg-opacity-50 flex items-center justify-center p-4">
-      <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full overflow-hidden transition-all transform">
-        
-        <!-- Modal Header -->
-        <div class="bg-blue-600 px-6 py-4 flex justify-between items-center text-white">
-          <h3 class="text-lg font-bold">
-            @if (bookingSuccess()) { Appointment Confirmed! } @else { Confirm & Pay Appointment }
-          </h3>
-          <button (click)="closeBookingModal()" class="text-blue-100 hover:text-white text-2xl font-bold leading-none">&times;</button>
+
+    <!-- Estado 1: Spinner de Cargando -->
+    @if (isLoading()) {
+      <div class="flex flex-col items-center justify-center py-16">
+        <div class="animate-spin rounded-full h-11 w-11 border-b-2 border-[#00529B] mb-3"></div>
+        <p class="text-sm font-medium text-slate-600">Searching available slots...</p>
+      </div>
+    } @else {
+
+      <!-- Estado 2: Lista Vacía (No slots available) -->
+      @if (availableSlots().length === 0) {
+        <div class="text-center py-16 bg-white rounded-3xl border border-slate-200/80 shadow-sm px-4">
+          <div class="w-14 h-14 bg-[#F4F7FA] text-[#00529B] rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900">No slots available</h3>
+          <p class="text-sm text-slate-600 max-w-sm mx-auto mt-1">
+            There are no available appointments matching your selected filter criteria. Try clearing or changing the date.
+          </p>
+          <button
+            (click)="resetFilters()"
+            class="mt-5 px-6 py-2.5 bg-[#00529B] hover:bg-[#003E75] text-white font-semibold text-sm rounded-full transition-colors shadow-sm">
+            Reset Filters
+          </button>
         </div>
+      } @else {
 
-        <!-- Body Modal -->
-        <div class="p-6">
-          
-          <!-- PANTALLA DE ÉXITO DE RESERVA -->
-          @if (bookingSuccess()) {
-            <div class="text-center py-4 space-y-4">
-              <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto">
-                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-                </svg>
+        <!-- Estado 3: Grilla Responsiva de Tarjetas de Horarios -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          @for (slot of rawAvailableSlots(); track slot.id) {
+            <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+              <div>
+                <!-- Badges superiores -->
+                <div class="flex justify-between items-center mb-4">
+                  <span class="px-3 py-1 text-xs font-semibold bg-[#007A3D]/10 text-[#007A3D] rounded-full border border-[#007A3D]/20">
+                    Available
+                  </span>
+                  <span class="text-xs font-semibold text-slate-600 flex items-center gap-1.5">
+                    <svg class="w-4 h-4 text-[#00529B]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    {{ slot.date | date:'dd/MM/yyyy' }}
+                  </span>
+                </div>
+
+                <!-- Info del Médico -->
+                <h4 class="font-bold text-slate-900 text-lg leading-snug">
+                  {{ slot.doctorName || 'Medical Specialist' }}
+                </h4>
+                <p class="text-sm text-[#00529B] font-semibold mt-0.5">
+                  {{ slot.specialization || 'General Medicine' }}
+                </p>
+
+                <!-- Horario -->
+                <div class="mt-4 bg-[#F4F7FA] p-3 rounded-xl border border-slate-200/60 flex items-center gap-2.5">
+                  <svg class="w-4 h-4 text-[#00529B] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span class="text-sm font-bold text-slate-800">
+                    {{ slot.startTime }} - {{ slot.endTime }}
+                  </span>
+                </div>
               </div>
-              
-              <h4 class="text-xl font-bold text-gray-900">Payment & Reservation Successful!</h4>
-              <p class="text-sm text-gray-600">Your appointment has been registered and confirmed.</p>
 
-              <div class="bg-gray-50 p-4 rounded-xl text-left text-sm space-y-2 border border-gray-200">
-                <p><strong>Transaction ID:</strong> <span class="font-mono text-blue-600 font-bold">{{ transactionId() }}</span></p>
-                <p><strong>Doctor:</strong> {{ selectedSlotForBooking()?.doctorName || 'Doctor' }}</p>
-                <p><strong>Date:</strong> {{ selectedSlotForBooking()?.date }}</p>
-                <p><strong>Time:</strong> {{ selectedSlotForBooking()?.startTime }} - {{ selectedSlotForBooking()?.endTime }}</p>
-                <p><strong>Total Paid:</strong> $50.00 USD</p>
-              </div>
-
-              <button 
-                (click)="closeBookingModal()" 
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg transition duration-150">
-                Done
+              <!-- Botón de Selección píldora -->
+              <button
+                (click)="openBookingModal(slot)"
+                type="button"
+                class="mt-6 w-full py-2.5 px-6 bg-[#00529B] hover:bg-[#003E75] text-white rounded-full font-semibold text-sm shadow-sm transition-colors">
+                Select & Book
               </button>
             </div>
-          } 
-          <!-- FORMULARIO DE RESERVA Y PAGO -->
-          @else {
-            <!-- Resumen del Turno -->
-            @if (selectedSlotForBooking(); as slot) {
-              <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 text-sm text-blue-900 space-y-1">
-                <div class="flex justify-between font-bold text-base text-blue-950">
-                  <span>{{ slot.doctorName || 'Doctor' }}</span>
-                  <span>$50.00 USD</span>
-                </div>
-                <p class="text-blue-700 font-medium">{{ slot.specialization || 'General Practice' }}</p>
-                <div class="pt-2 text-xs text-blue-800 flex justify-between border-t border-blue-200 mt-2">
-                  <span>📅 Date: {{ slot.date| date:'dd/MM/yyyy' }}</span>
-                  <span>⏰ {{ slot.startTime }} - {{ slot.endTime }}</span>
-                </div>
-              </div>
-            }
-
-            <!-- Formulario de Tarjeta -->
-            <form [formGroup]="paymentForm" (ngSubmit)="processBooking()" class="space-y-4">
-              
-              <!-- Nombre en Tarjeta -->
-              <div>
-                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Cardholder Name</label>
-                <input 
-                  type="text" 
-                  formControlName="cardHolder"
-                  placeholder="John Doe"
-                  class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2.5 text-sm border"
-                  [class.border-red-500]="paymentForm.get('cardHolder')?.invalid && paymentForm.get('cardHolder')?.touched">
-                @if (paymentForm.get('cardHolder')?.invalid && paymentForm.get('cardHolder')?.touched) {
-                  <span class="text-xs text-red-500">Cardholder name is required.</span>
-                }
-              </div>
-
-              <!-- Número de Tarjeta -->
-              <div>
-                <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Card Number (16 Digits)</label>
-                <input 
-                  type="text" 
-                  formControlName="cardNumber"
-                  maxlength="16"
-                  placeholder="4532000012345678"
-                  class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2.5 text-sm border font-mono"
-                  [class.border-red-500]="paymentForm.get('cardNumber')?.invalid && paymentForm.get('cardNumber')?.touched">
-                @if (paymentForm.get('cardNumber')?.invalid && paymentForm.get('cardNumber')?.touched) {
-                  <span class="text-xs text-red-500">Enter a valid 16-digit card number.</span>
-                }
-              </div>
-
-              <!-- Expiración y CVC -->
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">Expiry Date</label>
-                  <input 
-                    type="text" 
-                    formControlName="expiryDate"
-                    placeholder="MM/YY"
-                    maxlength="5"
-                    class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2.5 text-sm border text-center font-mono"
-                    [class.border-red-500]="paymentForm.get('expiryDate')?.invalid && paymentForm.get('expiryDate')?.touched">
-                  @if (paymentForm.get('expiryDate')?.invalid && paymentForm.get('expiryDate')?.touched) {
-                    <span class="text-xs text-red-500">Format: MM/YY</span>
-                  }
-                </div>
-
-                <div>
-                  <label class="block text-xs font-semibold text-gray-700 uppercase mb-1">CVC Code</label>
-                  <input 
-                    type="password" 
-                    formControlName="cvc"
-                    placeholder="123"
-                    maxlength="4"
-                    class="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 p-2.5 text-sm border text-center font-mono"
-                    [class.border-red-500]="paymentForm.get('cvc')?.invalid && paymentForm.get('cvc')?.touched">
-                  @if (paymentForm.get('cvc')?.invalid && paymentForm.get('cvc')?.touched) {
-                    <span class="text-xs text-red-500">3 or 4 digits</span>
-                  }
-                </div>
-              </div>
-
-              <!-- Botones de Acción -->
-              <div class="pt-4 flex gap-3">
-                <button 
-                  type="button" 
-                  (click)="closeBookingModal()"
-                  class="w-1/2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2.5 px-4 rounded-lg transition duration-150">
-                  Cancel
-                </button>
-
-                <button 
-                  type="submit" 
-                  [disabled]="isProcessingPayment()"
-                  class="w-1/2 bg-green-600 hover:bg-green-700 text-white font-medium py-2.5 px-4 rounded-lg transition duration-150 flex items-center justify-center gap-2 shadow-sm disabled:opacity-50">
-                  @if (isProcessingPayment()) {
-                    <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                    <span>Processing...</span>
-                  } @else {
-                    <span>Pay $50.00</span>
-                  }
-                </button>
-              </div>
-
-            </form>
           }
         </div>
+      }
+    }
+
+    <!-- ========================================== -->
+    <!-- MODAL DE CHECKOUT & PAGO SIMULADO (HUF-3)   -->
+    <!-- ========================================== -->
+    @if (isBookingModalOpen()) {
+      <div class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-200/80 transition-all transform">
+
+          <!-- Modal Header (Azul corporativo #00529B) -->
+          <div class="bg-[#00529B] px-6 py-5 flex justify-between items-center text-white">
+            <h3 class="text-lg font-bold tracking-tight">
+              @if (bookingSuccess()) { Appointment Confirmed! } @else { Confirm & Pay Appointment }
+            </h3>
+            <button
+              type="button"
+              (click)="closeBookingModal()"
+              class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xl leading-none transition-colors">
+              ×
+            </button>
+          </div>
+
+          <!-- Body Modal -->
+          <div class="p-6 md:p-7">
+
+            <!-- PANTALLA DE ÉXITO DE RESERVA -->
+            @if (bookingSuccess()) {
+              <div class="text-center py-3 space-y-4">
+                <div class="w-16 h-16 bg-[#007A3D]/10 text-[#007A3D] rounded-full flex items-center justify-center mx-auto">
+                  <svg class="w-9 h-9" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+
+                <div>
+                  <h4 class="text-xl font-bold text-slate-900">Payment & Reservation Successful!</h4>
+                  <p class="text-sm text-slate-600 mt-1">Your appointment has been registered and confirmed.</p>
+                </div>
+
+                <div class="bg-[#F4F7FA] p-4 rounded-2xl text-left text-sm space-y-2 border border-slate-200/80 text-slate-700">
+                  <p><strong class="text-slate-900">Transaction ID:</strong> <span class="font-mono text-[#00529B] font-bold">{{ transactionId() }}</span></p>
+                  <p><strong class="text-slate-900">Doctor:</strong> {{ selectedSlotForBooking()?.doctorName || 'Doctor' }}</p>
+                  <p><strong class="text-slate-900">Date:</strong> {{ selectedSlotForBooking()?.date }}</p>
+                  <p><strong class="text-slate-900">Time:</strong> {{ selectedSlotForBooking()?.startTime }} - {{ selectedSlotForBooking()?.endTime }}</p>
+                  <p><strong class="text-slate-900">Total Paid:</strong> <span class="font-bold text-[#007A3D]">$50.00 USD</span></p>
+                </div>
+
+                <button
+                  type="button"
+                  (click)="closeBookingModal()"
+                  class="w-full bg-[#00529B] hover:bg-[#003E75] text-white font-semibold py-2.5 px-6 rounded-full transition-colors shadow-sm">
+                  Done
+                </button>
+              </div>
+            }
+            <!-- FORMULARIO DE RESERVA Y PAGO -->
+            @else {
+              <!-- Resumen del Turno -->
+              @if (selectedSlotForBooking(); as slot) {
+                <div class="bg-[#F4F7FA] border border-slate-200/80 rounded-2xl p-4 mb-6 text-sm text-slate-800 space-y-1">
+                  <div class="flex justify-between font-bold text-base text-slate-900">
+                    <span>{{ slot.doctorName || 'Doctor' }}</span>
+                    <span class="text-[#007A3D]">$50.00 USD</span>
+                  </div>
+                  <p class="text-[#00529B] font-semibold">{{ slot.specialization || 'General Practice' }}</p>
+                  <div class="pt-2.5 text-xs text-slate-600 flex justify-between border-t border-slate-200 mt-2.5 font-medium">
+                    <span class="inline-flex items-center gap-1.5">
+                      <svg class="w-3.5 h-3.5 text-[#00529B]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      Date: {{ slot.date | date:'dd/MM/yyyy' }}
+                    </span>
+                    <span class="inline-flex items-center gap-1.5">
+                      <svg class="w-3.5 h-3.5 text-[#00529B]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {{ slot.startTime }} - {{ slot.endTime }}
+                    </span>
+                  </div>
+                </div>
+              }
+
+              <!-- Formulario de Tarjeta -->
+              <form [formGroup]="paymentForm" (ngSubmit)="processBooking()" class="space-y-4">
+
+                <!-- Nombre en Tarjeta -->
+                <div>
+                  <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Cardholder Name</label>
+                  <input
+                    type="text"
+                    formControlName="cardHolder"
+                    placeholder="John Doe"
+                    class="w-full rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#00529B]/20 focus:border-[#00529B] px-3.5 py-2.5 text-sm text-slate-800 transition"
+                    [class.border-rose-500]="paymentForm.get('cardHolder')?.invalid && paymentForm.get('cardHolder')?.touched">
+                  @if (paymentForm.get('cardHolder')?.invalid && paymentForm.get('cardHolder')?.touched) {
+                    <span class="text-xs text-rose-600 mt-1 block">Cardholder name is required.</span>
+                  }
+                </div>
+
+                <!-- Número de Tarjeta -->
+                <div>
+                  <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Card Number (16 Digits)</label>
+                  <input
+                    type="text"
+                    formControlName="cardNumber"
+                    maxlength="16"
+                    placeholder="4532000012345678"
+                    class="w-full rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#00529B]/20 focus:border-[#00529B] px-3.5 py-2.5 text-sm text-slate-800 font-mono transition"
+                    [class.border-rose-500]="paymentForm.get('cardNumber')?.invalid && paymentForm.get('cardNumber')?.touched">
+                  @if (paymentForm.get('cardNumber')?.invalid && paymentForm.get('cardNumber')?.touched) {
+                    <span class="text-xs text-rose-600 mt-1 block">Enter a valid 16-digit card number.</span>
+                  }
+                </div>
+
+                <!-- Expiración y CVC -->
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Expiry Date</label>
+                    <input
+                      type="text"
+                      formControlName="expiryDate"
+                      placeholder="MM/YY"
+                      maxlength="5"
+                      class="w-full rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#00529B]/20 focus:border-[#00529B] px-3.5 py-2.5 text-sm text-slate-800 text-center font-mono transition"
+                      [class.border-rose-500]="paymentForm.get('expiryDate')?.invalid && paymentForm.get('expiryDate')?.touched">
+                    @if (paymentForm.get('expiryDate')?.invalid && paymentForm.get('expiryDate')?.touched) {
+                      <span class="text-xs text-rose-600 mt-1 block">Format: MM/YY</span>
+                    }
+                  </div>
+
+                  <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">CVC Code</label>
+                    <input
+                      type="password"
+                      formControlName="cvc"
+                      placeholder="123"
+                      maxlength="4"
+                      class="w-full rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#00529B]/20 focus:border-[#00529B] px-3.5 py-2.5 text-sm text-slate-800 text-center font-mono transition"
+                      [class.border-rose-500]="paymentForm.get('cvc')?.invalid && paymentForm.get('cvc')?.touched">
+                    @if (paymentForm.get('cvc')?.invalid && paymentForm.get('cvc')?.touched) {
+                      <span class="text-xs text-rose-600 mt-1 block">3 or 4 digits</span>
+                    }
+                  </div>
+                </div>
+
+                <!-- Botones de Acción píldora -->
+                <div class="pt-4 flex gap-3">
+                  <button
+                    type="button"
+                    (click)="closeBookingModal()"
+                    class="w-1/2 border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-semibold py-2.5 px-5 rounded-full transition-colors text-sm">
+                    Cancel
+                  </button>
+
+                  <button
+                    type="submit"
+                    [disabled]="isProcessingPayment()"
+                    class="w-1/2 bg-[#007A3D] hover:bg-[#006130] text-white font-semibold py-2.5 px-5 rounded-full transition-colors flex items-center justify-center gap-2 shadow-sm text-sm disabled:opacity-50">
+                    @if (isProcessingPayment()) {
+                      <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                      <span>Processing...</span>
+                    } @else {
+                      <span>Pay $50.00</span>
+                    }
+                  </button>
+                </div>
+
+              </form>
+            }
+          </div>
+        </div>
       </div>
-    </div>
-  }
+    }
+
+  </div>
+</div>

@@ -5,7 +5,7 @@ import { FooterComponent } from '../footer/footer.component';
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterOutlet, FooterComponent],
+  imports: [CommonModule, RouterLink, FooterComponent],
   templateUrl: './landing.component.html'
 })
 export class LandingComponent {
