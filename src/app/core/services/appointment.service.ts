@@ -29,8 +29,8 @@ export class AppointmentService {
     /**
      * Cancela una cita médica existente indicando su ID.
      */
-    cancelAppointment(appointmentId: number): Observable<void> {
-      return this.http.delete<void>(`${this.apiUrl}/${appointmentId}`);
+    cancelAppointment(appointmentId: number): Observable<{ message: string }> {
+      return this.http.put<{ message: string }>(`${this.apiUrl}/${appointmentId}/cancel`, {});
     }
 
 }

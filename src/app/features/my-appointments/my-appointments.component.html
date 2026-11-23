@@ -22,6 +22,22 @@
       </button>
     </header>
 
+    <!-- Mensaje de Éxito tras cancelar -->
+    @if (successMessage()) {
+      <div class="bg-[#007A3D]/10 border-l-4 border-[#007A3D] p-4 rounded-r-2xl shadow-sm flex items-center justify-between">
+        <p class="text-sm font-medium text-[#007A3D]">{{ successMessage() }}</p>
+        <button type="button" (click)="successMessage.set(null)" class="text-[#007A3D] hover:opacity-75 font-bold text-lg leading-none">×</button>
+      </div>
+    }
+
+    <!-- Mensaje de Error -->
+    @if (errorMessage()) {
+      <div class="bg-rose-50 border-l-4 border-rose-600 p-4 rounded-r-2xl shadow-sm flex items-center justify-between">
+        <p class="text-sm font-medium text-rose-800">{{ errorMessage() }}</p>
+        <button type="button" (click)="errorMessage.set(null)" class="text-rose-800 hover:opacity-75 font-bold text-lg leading-none">×</button>
+      </div>
+    }
+
     <!-- Indicador de Carga -->
     @if (isLoading()) {
       <div class="flex flex-col justify-center items-center py-16">
@@ -30,15 +46,8 @@
       </div>
     }
 
-    <!-- Mensaje de Error -->
-    @if (errorMessage()) {
-      <div class="bg-rose-50 border-l-4 border-rose-600 p-4 rounded-r-2xl shadow-sm">
-        <p class="text-sm font-medium text-rose-800">{{ errorMessage() }}</p>
-      </div>
-    }
-
     <!-- Lista / Grilla de Citas -->
-    @if (!isLoading() && !errorMessage()) {
+    @if (!isLoading()) {
       @if (appointments().length === 0) {
         <div class="bg-white rounded-3xl p-12 text-center border border-slate-200/80 shadow-sm">
           <div class="w-14 h-14 rounded-full bg-[#F4F7FA] text-[#00529B] flex items-center justify-center mx-auto mb-4">
@@ -91,7 +100,11 @@
                 <div class="bg-[#F4F7FA] rounded-2xl p-3.5 text-xs text-slate-600 space-y-1.5 border border-slate-200/60">
                   <div class="flex justify-between items-center">
                     <span>Payment Status:</span>
-                    <span class="font-bold text-[#007A3D] uppercase">{{ item.paymentStatus }}</span>
+                    <span
+                      class="font-bold uppercase"
+                      [ngClass]="item.paymentStatus.toLowerCase() === 'refunded' ? 'text-amber-700' : 'text-[#007A3D]'">
+                      {{ item.paymentStatus }}
+                    </span>
                   </div>
                   <div class="flex justify-between items-center">
                     <span>Amount Paid:</span>
@@ -104,10 +117,90 @@
                 </div>
 
               </div>
+
+              <!-- Acción de Cancelar (solo visible en citas Scheduled) -->
+              @if (item.status.toLowerCase() === 'scheduled') {
+                <div class="pt-5 mt-5 border-t border-slate-100">
+                  <button
+                    type="button"
+                    (click)="openCancelModal(item)"
+                    class="w-full py-2.5 px-5 rounded-full border border-rose-200 bg-white hover:bg-rose-50 hover:border-rose-300 text-rose-700 font-semibold text-xs transition-colors">
+                    Cancel Appointment
+                  </button>
+                </div>
+              }
             </div>
           }
         </div>
       }
+    }
+
+    <!-- ========================================== -->
+    <!-- MODAL DE CONFIRMACIÓN DE CANCELACIÓN       -->
+    <!-- ========================================== -->
+    @if (appointmentToCancel(); as selected) {
+      <div class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden border border-slate-200/80 transition-all transform">
+
+          <!-- Cabecera del Modal -->
+          <div class="bg-[#00529B] px-6 py-5 flex justify-between items-center text-white">
+            <h3 class="text-lg font-bold tracking-tight">Cancel Appointment</h3>
+            <button
+              type="button"
+              (click)="closeCancelModal()"
+              [disabled]="isCancelling()"
+              class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-xl leading-none transition-colors disabled:opacity-50">
+              ×
+            </button>
+          </div>
+
+          <!-- Cuerpo del Modal -->
+          <div class="p-6 md:p-7 space-y-5">
+            <p class="text-sm text-slate-600 leading-relaxed">
+              Are you sure you want to cancel your consultation with <strong class="text-slate-900">{{ selected.doctorName }}</strong>? This will release the time slot and process a full simulated refund.
+            </p>
+
+            <div class="bg-[#F4F7FA] border border-slate-200/80 rounded-2xl p-4 text-xs text-slate-700 space-y-1.5">
+              <div class="flex justify-between">
+                <span class="text-slate-500">Appointment ID:</span>
+                <span class="font-mono font-bold text-slate-900">#{{ selected.id }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Date & Time:</span>
+                <span class="font-semibold text-slate-900">{{ selected.date }} · {{ selected.startTime }} - {{ selected.endTime }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-500">Refund Amount:</span>
+                <span class="font-bold text-[#007A3D]">${{ selected.amountPaid }}.00 USD</span>
+              </div>
+            </div>
+
+            <div class="pt-2 flex gap-3">
+              <button
+                type="button"
+                (click)="closeCancelModal()"
+                [disabled]="isCancelling()"
+                class="w-1/2 border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-semibold py-2.5 px-5 rounded-full transition-colors text-sm disabled:opacity-50">
+                Keep Visit
+              </button>
+
+              <button
+                type="button"
+                (click)="confirmCancelAppointment()"
+                [disabled]="isCancelling()"
+                class="w-1/2 bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2.5 px-5 rounded-full transition-colors flex items-center justify-center gap-2 shadow-sm text-sm disabled:opacity-50">
+                @if (isCancelling()) {
+                  <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  <span>Cancelling...</span>
+                } @else {
+                  <span>Confirm Cancel</span>
+                }
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
     }
 
   </div>
