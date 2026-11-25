@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
@@ -11,7 +11,7 @@ import { AuthService } from '../../../core/services/auth.service';
   templateUrl: './auth-form.component.html',
   styleUrl: './auth-form.component.css'
 })
-export class AuthFormComponent {
+export class AuthFormComponent implements OnDestroy {
 
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
@@ -23,6 +23,9 @@ export class AuthFormComponent {
   successMessage = signal<string | null>(null);
   isLoading = signal<boolean>(false);
   showPassword = signal<boolean>(false);
+  showWakeUpNotice = signal<boolean>(false);
+
+  private wakeUpTimer: ReturnType<typeof setTimeout> | null = null;
 
   // Formulario Reactivo
   authForm: FormGroup = this.fb.group({
@@ -32,11 +35,16 @@ export class AuthFormComponent {
     role: ['Patient']
   });
 
+  ngOnDestroy(): void {
+    this.clearWakeUpTimer();
+  }
+
   toggleMode(): void {
     this.isLoginMode.update(val => !val);
     this.errorMessage.set(null);
     this.successMessage.set(null);
     this.showPassword.set(false);
+    this.clearWakeUpTimer();
 
     if (this.isLoginMode()) {
       this.authForm.get('name')?.clearValidators();
@@ -59,6 +67,7 @@ export class AuthFormComponent {
     this.isLoading.set(true);
     this.errorMessage.set(null);
     this.successMessage.set(null);
+    this.startWakeUpTimer();
 
     if (this.isLoginMode()) {
       const { email, password } = this.authForm.value;
@@ -74,7 +83,25 @@ export class AuthFormComponent {
     }
   }
 
+  private startWakeUpTimer(): void {
+    this.clearWakeUpTimer();
+    this.wakeUpTimer = setTimeout(() => {
+      if (this.isLoading()) {
+        this.showWakeUpNotice.set(true);
+      }
+    }, 3000);
+  }
+
+  private clearWakeUpTimer(): void {
+    if (this.wakeUpTimer) {
+      clearTimeout(this.wakeUpTimer);
+      this.wakeUpTimer = null;
+    }
+    this.showWakeUpNotice.set(false);
+  }
+
   private handleRegisterSuccess(): void {
+    this.clearWakeUpTimer();
     this.isLoading.set(false);
     this.isLoginMode.set(true);
     this.authForm.get('name')?.clearValidators();
@@ -86,6 +113,7 @@ export class AuthFormComponent {
   }
 
   private handleLoginSuccess(): void {
+    this.clearWakeUpTimer();
     this.isLoading.set(false);
     const role = this.authService.userRole();
     if (role === 'Patient') {
@@ -98,6 +126,7 @@ export class AuthFormComponent {
   }
 
   private handleError(err: any): void {
+    this.clearWakeUpTimer();
     this.isLoading.set(false);
     if (err.status === 401 || err.status === 400) {
       const serverMsg = typeof err.error === 'string' ? err.error : err.error?.message;
