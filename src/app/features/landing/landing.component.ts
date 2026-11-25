@@ -2,6 +2,9 @@ import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
+import { AuthService } from '../../core/services/auth.service';
+import { inject } from '@angular/core';
+
 @Component({
   selector: 'app-landing',
   standalone: true,
@@ -10,7 +13,12 @@ import { FooterComponent } from '../footer/footer.component';
 })
 export class LandingComponent {
   activeSlide = signal<number>(0);
+  private authService = inject(AuthService);
 
+  ngOnInit(): void {
+      this.authService.wakeUpServer();
+  }
+  
   heroSlides = [
     {
       title: 'Comprehensive care for you and your family',

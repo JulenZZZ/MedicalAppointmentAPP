@@ -1,6 +1,6 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import {catchError, EMPTY, Observable, tap } from 'rxjs';
 import { AuthResponse, LoginRequest, RegisterRequest, UserSession } from '../models/auth.model';
 import { environment } from '../../../environments/environment';
 
@@ -37,6 +37,14 @@ export class AuthService {
   getToken(): string | null {
     return this.currentUserSignal()?.token ?? null;
   }
+  
+  wakeUpServer(): void {
+  const rootUrl = environment.apiUrl.replace(/\/api\/?$/, '');
+
+  this.http.get(rootUrl, { responseType: 'text' })
+    .pipe(catchError(() => EMPTY)) // Silencia cualquier error de red o timeout
+    .subscribe();
+}
 
   private handleAuthSuccess(response: AuthResponse): void {
     const session: UserSession = {
