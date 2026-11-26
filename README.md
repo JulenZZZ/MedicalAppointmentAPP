@@ -95,7 +95,3 @@ This project is open-source and available under the MIT License.
 
 ---
 
-<ElicitationsGroup message="El README está listo con la hoja de ruta clara. ¿Con cuál componente seguimos en Angular?">
-  <Elicitation label="Configurar app.routes.ts con las rutas protegidas" query="Actualicemos app.routes.ts para asociar las rutas de pacientes y administradores con authGuard y roleGuard."/>
-  <Elicitation label="Construir el Navbar reactivo en shared/components" query="Creemos el componente Navbar reactivo en shared/components/navbar que se adapte según la sesión del usuario."/>
-</ElicitationsGroup>
