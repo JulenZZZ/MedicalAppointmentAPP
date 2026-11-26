@@ -22,4 +22,16 @@ describe('AuthFormComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
+  it('should fill demo patient credentials and trigger login on loginAsDemoPatient()', () => {
+  spyOn(component, 'onSubmit');
+
+  component.isLoginMode.set(false); // Simula que estaba en registro
+  component.loginAsDemoPatient();
+
+  expect(component.isLoginMode()).toBeTrue();
+  expect(component.authForm.value.email).toBe('sarah.jenkins@example.com');
+  expect(component.authForm.value.password).toBe('Patient123!');
+  expect(component.onSubmit).toHaveBeenCalledTimes(1);
+});
 });

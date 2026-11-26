@@ -99,6 +99,22 @@ export class AuthFormComponent implements OnDestroy {
     }
     this.showWakeUpNotice.set(false);
   }
+  
+  loginAsDemoPatient(): void {
+    if (this.isLoading()) return;
+
+    // Si estaba en modo registro, vuelve a modo login
+    if (!this.isLoginMode()) {
+      this.toggleMode();
+    }
+
+    this.authForm.patchValue({
+      email: 'sarah.jenkins@example.com',
+      password: 'Patient123!'
+    });
+
+    this.onSubmit();
+  }
 
   private handleRegisterSuccess(): void {
     this.clearWakeUpTimer();
